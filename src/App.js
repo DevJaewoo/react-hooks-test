@@ -1,13 +1,16 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useState } from "react";
+import { useInput } from "./useInput.js";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const validator = (value) => {
+    return value.length <= 10;
+  };
+  const name = useInput("Mr.", validator);
   return (
     <div className="App">
-      <h1>{count}</h1>
-      <button onClick={() => setCount((count) => count + 1)}>Click!</button>
+      <h1>Hello</h1>
+      <input placeholder="Name" {...name} />
     </div>
   );
 }
