@@ -1,35 +1,27 @@
 import logo from "./logo.svg";
 import "./App.css";
 
-const useConfirm = (message = "", onConfirm, onCancel) => {
-  if (typeof onConfirm !== "function") return;
-  if (typeof onCancel !== "function") return;
-
-  const confirmAction = () => {
-    if (window.confirm(message)) {
-      onConfirm();
-    } else {
-      onCancel();
-    }
+const usePreventLeave = () => {
+  const listener = (event) => {
+    event.preventDefault();
+    event.returnValue = "";
   };
 
-  return confirmAction;
+  const enablePrevent = () => window.addEventListener("beforeunload", listener);
+  const disablePrevent = () =>
+    window.removeEventListener("beforeunload", listener);
+
+  return { enablePrevent, disablePrevent };
 };
 
 function App() {
-  const confirm = () => {
-    console.log("Delete");
-  };
-
-  const abort = () => {
-    console.log("Aborted");
-  };
-  const deleteTheWorld = useConfirm("Are you sure?", confirm, abort);
+  const { enablePrevent, disablePrevent } = usePreventLeave();
 
   return (
     <div className="App">
       <h1>Hello</h1>
-      <button onClick={deleteTheWorld}>Delete the world</button>
+      <button onClick={enablePrevent}>Protect</button>
+      <button onClick={disablePrevent}>Unprotect</button>
     </div>
   );
 }
