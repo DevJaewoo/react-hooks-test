@@ -1,0 +1,26 @@
+{
+  "name": "@devjaewoo-hooks/use-axios",
+  "version": "1.0.1",
+  "description": "",
+  "main": "useAxios.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevJaewoo/react-hooks-test.git"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "axios",
+    "http"
+  ],
+  "author": "DevJaewoo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DevJaewoo/react-hooks-test/issues"
+  },
+  "homepage": "https://github.com/DevJaewoo/react-hooks-test#readme",
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

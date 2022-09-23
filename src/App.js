@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useRef, useState, useEffect } from "react";
-import useAxios from "./useAxios";
+import useAxios from "@devjaewoo-hooks/use-axios";
 
 function App() {
   const { loading, data, error, refetch } = useAxios({
