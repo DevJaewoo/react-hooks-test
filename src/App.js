@@ -1,28 +1,36 @@
 import "./App.css";
 import { useRef, useState, useEffect } from "react";
 
-const useScroll = () => {
-  const [scroll, setScroll] = useState({ y: 0, x: 0 });
+const useNotification = (title, options) => {
+  if (!("Notification" in window)) {
+    console.log("This browser does not support notification");
+    return;
+  }
 
-  const handler = () => {
-    setScroll({ y: window.scrollY, x: window.scrollX });
+  const notify = () => {
+    if (Notification.permission === "granted") {
+      console.log("granted");
+      new Notification(title, options);
+    } else {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          new Notification(title, options);
+        } else {
+          return;
+        }
+      });
+    }
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
-
-  return scroll;
+  return notify;
 };
 
 function App() {
-  const { y } = useScroll();
+  const notify = useNotification("Hello?", { body: "Hello" });
   return (
     <div className="App" style={{ height: "1000vh" }}>
-      <h1 style={{ color: y > 100 ? "red" : "blue", position: "fixed" }}>
-        Hello
-      </h1>
+      <h1>Hello</h1>
+      <button onClick={notify}>button</button>
     </div>
   );
 }
