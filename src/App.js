@@ -1,38 +1,28 @@
 import "./App.css";
 import { useRef, useState, useEffect } from "react";
 
-//callback을 받아 네트워크가 변경됐을 때 callback 호출, state 변경
-const useNetwork = (callback) => {
-  const [status, setStatus] = useState(navigator.onLine);
+const useScroll = () => {
+  const [scroll, setScroll] = useState({ y: 0, x: 0 });
 
   const handler = () => {
-    if (typeof callback === "function") {
-      callback(navigator.onLine);
-    }
-    setStatus(navigator.onLine);
+    setScroll({ y: window.scrollY, x: window.scrollX });
   };
 
   useEffect(() => {
-    window.addEventListener("online", handler);
-    window.addEventListener("offline", handler);
-    return () => {
-      window.removeEventListener("offline", handler);
-      window.removeEventListener("online", handler);
-    };
+    window.addEventListener("scroll", handler);
+    return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  return status;
+  return scroll;
 };
 
 function App() {
-  const status = useNetwork((value) => {
-    console.log(`network changed: ${value}`);
-  });
-
+  const { y } = useScroll();
   return (
-    <div className="App">
-      <h1>Hello</h1>
-      <p>{status ? "Online" : "Offline"}</p>
+    <div className="App" style={{ height: "1000vh" }}>
+      <h1 style={{ color: y > 100 ? "red" : "blue", position: "fixed" }}>
+        Hello
+      </h1>
     </div>
   );
 }
