@@ -1,30 +1,23 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { useState, useEffect, useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
-const useBeforeLeave = (callback) => {
-  const ref = useRef();
-  const handle = (event) => {
-    if (event.clientY <= 0 || true) {
-      callback();
-    }
-  };
-
+const useFadeIn = (duration = 1, delay = 0) => {
+  const element = useRef();
   useEffect(() => {
-    if (typeof callback !== "function") return;
-    ref.current.addEventListener("mouseleave", handle);
-    return () => ref.current.removeEventListener("mouseleave", handle);
+    if (typeof duration !== "number" || typeof delay !== "number") return;
+    const { current } = element;
+    current.style.transition = `opacity ${duration}s ease-in-out`;
+    current.style.transitionDelay = `${delay}s`;
+    current.style.opacity = 1;
   }, []);
-
-  return ref;
+  return { ref: element, style: { opacity: 0 } };
 };
 
 function App() {
-  const event = () => console.log("Hello!");
-  const ref = useBeforeLeave(event);
   return (
     <div className="App">
-      <h1 ref={ref}>Hello</h1>
+      <h1 {...useFadeIn(2, 2)}>Hello</h1>
+      <p {...useFadeIn(10)}>asdasd</p>
     </div>
   );
 }
