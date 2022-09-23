@@ -1,27 +1,27 @@
 import logo from "./logo.svg";
 import "./App.css";
+import { useState, useEffect, useRef } from "react";
 
-const usePreventLeave = () => {
-  const listener = (event) => {
-    event.preventDefault();
-    event.returnValue = "";
+const useBeforeLeave = (callback) => {
+  const handle = (event) => {
+    if (event.clientY <= 0) {
+      callback();
+    }
   };
 
-  const enablePrevent = () => window.addEventListener("beforeunload", listener);
-  const disablePrevent = () =>
-    window.removeEventListener("beforeunload", listener);
-
-  return { enablePrevent, disablePrevent };
+  useEffect(() => {
+    if (typeof callback !== "function") return;
+    document.addEventListener("mouseleave", handle);
+    return () => document.removeEventListener("mouseleave", handle);
+  }, []);
 };
 
 function App() {
-  const { enablePrevent, disablePrevent } = usePreventLeave();
-
+  const event = () => console.log("Hello!");
+  useBeforeLeave(event);
   return (
     <div className="App">
       <h1>Hello</h1>
-      <button onClick={enablePrevent}>Protect</button>
-      <button onClick={disablePrevent}>Unprotect</button>
     </div>
   );
 }
