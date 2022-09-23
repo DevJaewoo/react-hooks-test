@@ -3,25 +3,28 @@ import "./App.css";
 import { useState, useEffect, useRef } from "react";
 
 const useBeforeLeave = (callback) => {
+  const ref = useRef();
   const handle = (event) => {
-    if (event.clientY <= 0) {
+    if (event.clientY <= 0 || true) {
       callback();
     }
   };
 
   useEffect(() => {
     if (typeof callback !== "function") return;
-    document.addEventListener("mouseleave", handle);
-    return () => document.removeEventListener("mouseleave", handle);
+    ref.current.addEventListener("mouseleave", handle);
+    return () => ref.current.removeEventListener("mouseleave", handle);
   }, []);
+
+  return ref;
 };
 
 function App() {
   const event = () => console.log("Hello!");
-  useBeforeLeave(event);
+  const ref = useBeforeLeave(event);
   return (
     <div className="App">
-      <h1>Hello</h1>
+      <h1 ref={ref}>Hello</h1>
     </div>
   );
 }
